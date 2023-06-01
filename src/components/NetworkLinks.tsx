@@ -10,7 +10,12 @@ export function NetworkLinks() {
   return (
     <ul className="flex items-center gap-2">
       {outLinks.map(({ Icon, name }) => (
-        <li key={name}>{<Icon />}</li>
+        <li
+          className="transition-all cursor-pointer hover:text-red-500"
+          key={name}
+        >
+          {<Icon />}
+        </li>
       ))}
     </ul>
   );

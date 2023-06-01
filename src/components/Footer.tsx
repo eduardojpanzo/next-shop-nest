@@ -1,6 +1,12 @@
-import Image from "next/image";
+import Link from "next/link";
 import { Logo } from "./Logo";
 import { NetworkLinks } from "./NetworkLinks";
+
+const pageItems = [
+  { path: "/", value: "Home" },
+  { path: "/about", value: "AboutUs" },
+  { path: "/conctact", value: "Contact" },
+];
 
 export function Footer() {
   return (
@@ -19,9 +25,11 @@ export function Footer() {
         <div>
           <h2 className="font-bold text-lg">Paginas</h2>
           <ul className="flex flex-col gap-2">
-            <li>Home</li>
-            <li>AboutUs</li>
-            <li>Contact</li>
+            {pageItems.map(({ path, value }) => (
+              <li key={path} className="transition-all hover:text-red-500">
+                <Link href={path}>{value}</Link>
+              </li>
+            ))}
           </ul>
         </div>
 

@@ -1,19 +1,11 @@
 import { ShoppingCart, Search } from "lucide-react";
-import Image from "next/image";
+import { Logo } from "./Logo";
 
 export function TopBar() {
   return (
     <div className="h-[50px] bg-slate-800 ">
       <div className="h-full max-w-[1024px] px-2  flex items-center justify-between mx-auto text-white lg:px-0">
-        <h1>
-          <Image
-            src={"/logo-v.png"}
-            alt="logo"
-            width={100}
-            height="42"
-            priority
-          />
-        </h1>
+        <Logo />
 
         <form className="w-[35%] min-w-[100px] flex justify-between rounded-sm bg-slate-100 overflow-hidden">
           <input

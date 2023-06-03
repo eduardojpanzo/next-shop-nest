@@ -1,7 +1,8 @@
 import { Banner } from "@/components/Banner";
 import { CategoryCard } from "@/components/CategoryCard";
 import { ProductCard } from "@/components/ProductCard";
-import { Tags } from "@/components/Tags";
+import { Tag } from "@/components/Tag";
+import { BoxIcon } from "lucide-react";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       <Banner />
       <CategoryCard />
       <ProductCard />
-      <Tags />
+      <Tag Icon={<BoxIcon />} name="Non Contact Ship" />
     </>
   );
 }

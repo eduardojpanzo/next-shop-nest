@@ -1,5 +1,5 @@
 import { Banner } from "@/components/Banner";
-import { CategoryCard } from "@/components/CategoryCard";
+import Categories from "@/components/Categories";
 import { Newsletter } from "@/components/Newsletter";
 import { ProductCard } from "@/components/ProductCard";
 import { Tag } from "@/components/Tag";
@@ -9,7 +9,7 @@ export default function Home() {
   return (
     <>
       <Banner />
-      <CategoryCard />
+      <Categories />
       <ProductCard />
       <Tag Icon={<BoxIcon />} name="Non Contact Ship" />
       <Newsletter />

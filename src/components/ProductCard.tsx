@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export function ProductCard() {
   return (
-    <div className="max-w-[300px] flex flex-col border border-slate-300">
+    <div className="max-w-[300px] flex flex-col border border-white">
       <div className="max-w-full h-auto">
         <Image
           className="w-full object-cover"

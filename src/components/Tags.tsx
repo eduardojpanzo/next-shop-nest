@@ -8,18 +8,16 @@ const tagsData = [
 
 export function Tags() {
   return (
-    <div className="py-10">
-      <div className="max-w-[1024px] flex justify-between items-center mx-auto overflow-hidden">
-        {tagsData.map(({ key, name, Icon }) => (
-          <div
-            key={key}
-            className="w-[300px] p-3 flex items-center justify-center gap-3 border border-slate-300"
-          >
-            {Icon}
-            <span className="italic">{name}</span>
-          </div>
-        ))}
-      </div>
+    <div className="flex flex-col justify-between items-center gap-4 py-10 md:flex-row">
+      {tagsData.map(({ key, name, Icon }) => (
+        <div
+          key={key}
+          className="w-[300px] p-3 flex items-center justify-center gap-3 border border-slate-300"
+        >
+          {Icon}
+          <span className="italic">{name}</span>
+        </div>
+      ))}
     </div>
   );
 }

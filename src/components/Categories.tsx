@@ -32,7 +32,10 @@ export default function Categories() {
 
             <p className="font-extrabold text-2xl uppercase">{title}</p>
 
-            <Link className="flex gap-3 mt-4" href={`shop/girl`}>
+            <Link
+              className="flex items-center gap-3 mt-4 transition-all hover:text-2xl hover:font-bold"
+              href={`shop/girl`}
+            >
               Compre <ArrowRight />
             </Link>
           </div>

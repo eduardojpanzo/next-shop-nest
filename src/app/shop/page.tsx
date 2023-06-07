@@ -1,3 +1,3 @@
 export default function Shop() {
-  return <div>Shop - em desevolvimento</div>;
+  return <div className="min-h-screen">Shop - em desevolvimento</div>;
 }

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Dialog } from "./Dialog";
+import Input from "./Input";
 
 const menuItems = [
   { path: "/", value: "Home" },
@@ -29,16 +30,16 @@ export function NavBar() {
 
         <div className="flex gap-3">
           <Dialog
-            desc="lorem more thas sjrir tri"
             title="Criar Conta"
+            desc="Crie a sua conta, ganhe beneficios, favorite os seus produtos e mantenha-se atualizado (a)!"
             trigger={<button className="bg-slate-300">Criar conta</button>}
           >
-            <button>Criar conta</button>
+            Sign up
           </Dialog>
 
           <Dialog
-            desc="lorem more thas sjrir tri"
             title="Entrar"
+            desc="Entre na sua conta e faça as suas escolhas!"
             trigger={
               <button className="text-slate-100 bg-red-500">Entrar</button>
             }

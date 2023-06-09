@@ -13,7 +13,7 @@ export default function Home() {
         <Tags />
       </div>
       <div className="bg-[#f7f7f7] py-10">
-        <div className="max-w-[1024px] mx-auto flex flex-col gap-4 justify-center items-center md:flex-row md:flex-wrap md:justify-start">
+        <div className="max-w-[1024px] mx-auto flex flex-col items-center justify-center content-center gap-2 md:flex-row md:flex-wrap lg:justify-start">
           <ProductCard />
           <ProductCard />
           <ProductCard />

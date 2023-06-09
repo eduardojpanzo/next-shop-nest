@@ -3,7 +3,7 @@ import { Logo } from "./Logo";
 
 export function TopBar() {
   return (
-    <div className="h-[50px] bg-slate-800 ">
+    <div className="h-[50px] bg-slate-800 sticky top-0 z-10">
       <div className="h-full max-w-[1024px] px-2  flex items-center justify-between mx-auto text-white lg:px-0">
         <Logo />
 

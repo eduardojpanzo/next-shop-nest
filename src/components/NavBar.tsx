@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { Dialog } from "./Dialog";
-import Input from "./Input";
+import { SignInForm } from "./SignInForm";
+import { SignUpForm } from "./SignUpForm";
 
 const menuItems = [
   { path: "/", value: "Home" },
@@ -34,7 +35,7 @@ export function NavBar() {
             desc="Crie a sua conta, ganhe beneficios, favorite os seus produtos e mantenha-se atualizado (a)!"
             trigger={<button className="bg-slate-300">Criar conta</button>}
           >
-            Sign up
+            <SignUpForm />
           </Dialog>
 
           <Dialog
@@ -44,7 +45,7 @@ export function NavBar() {
               <button className="text-slate-100 bg-red-500">Entrar</button>
             }
           >
-            Login
+            <SignInForm />
           </Dialog>
         </div>
       </div>

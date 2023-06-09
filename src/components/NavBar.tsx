@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { Dialog } from "./Dialog";
 
 const menuItems = [
   { path: "/", value: "Home" },
@@ -25,8 +28,23 @@ export function NavBar() {
         </ul>
 
         <div className="flex gap-3">
-          <button>Criar conta</button>
-          <button className="text-slate-100 bg-red-500">Entrar</button>
+          <Dialog
+            desc="lorem more thas sjrir tri"
+            title="Criar Conta"
+            trigger={<button className="bg-slate-300">Criar conta</button>}
+          >
+            <button>Criar conta</button>
+          </Dialog>
+
+          <Dialog
+            desc="lorem more thas sjrir tri"
+            title="Entrar"
+            trigger={
+              <button className="text-slate-100 bg-red-500">Entrar</button>
+            }
+          >
+            Login
+          </Dialog>
         </div>
       </div>
     </div>

@@ -1,8 +1,24 @@
+import { useAuth } from "@/app/hooks/auth";
+import { useRouter } from "next/navigation";
+import { FormEvent } from "react";
 import Input from "./Input";
 
 export function SignInForm() {
+  const router = useRouter();
+  const { logIn } = useAuth();
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    await logIn({
+      email: "jep@gmail.com",
+      password: "12345678",
+    });
+
+    //router.push("/");
+  };
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <Input name="email" type="email" label="E-mail" />
 
       <Input name="password" type="password" label="Palavra Passe" />

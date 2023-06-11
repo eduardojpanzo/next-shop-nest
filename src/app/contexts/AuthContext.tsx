@@ -1,80 +1,99 @@
-import { useRouter } from "next/navigation";
+"use client";
+
 import { createContext, ReactNode } from "react";
+import decode from "jwt-decode";
+import { setCookie, deleteCookie, getCookie, hasCookie } from "cookies-next";
 import { toast } from "react-toastify";
 
 import { apiuser } from "@/lib/api";
-import { LoginType, RegisterType } from "./types";
-import { NextResponse } from "next/server";
+import { LoginType, RegisterType, User } from "./types";
 
-interface AuthContextProps {}
+interface AuthContextProps {
+  logIn(data: LoginType): Promise<void>;
+  logout(): Promise<void>;
+  register(data: RegisterType): Promise<void>;
+  user: User;
+  isAuthnticated: boolean;
+}
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
-  const router = useRouter();
+  const user = getUser();
+  const isAuthnticated =
+    user && hasCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`);
 
-  const logIn = async (data: LoginType) => {
+  async function logIn(data: LoginType) {
     try {
       const registerResponse = await apiuser.post("/user/login", data);
 
       const { token } = registerResponse.data;
 
-      const cookieExpiresInSeconds = 60 * 60 * 24 * 3; // 3 days
+      const cookieExpiresInSeconds = 60 * 60 * 24 * 7; // 7 days
 
       if (token) {
-        //mostrar informação que cadastro feito!
-        toast("Usuario resconhecido", {
+        setCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`, token, {
+          maxAge: cookieExpiresInSeconds,
+          sameSite: true,
+        });
+
+        toast("Usúario Encotrado!", {
           autoClose: 2000,
           type: "success",
         });
-
-        //redicionar pagina inicial
-        const redirectURL = new URL("/");
-        return NextResponse.redirect(redirectURL, {
-          headers: {
-            "set-Cookie": `token= ${token}; Path=/; max-age=${cookieExpiresInSeconds}`,
-          },
-        });
       }
     } catch (error) {
-      toast(`${error}`, {
+      toast("Faltha ao Localizar o Usuário!", {
         autoClose: 2000,
         type: "error",
       });
     }
-  };
+  }
 
-  const logout = async () => {
-    const redirectURL = new URL("/");
+  async function logout() {
+    deleteCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`, { path: "/" });
+  }
 
-    return NextResponse.redirect(redirectURL, {
-      headers: {
-        "set-Cookie": `token=; Path=/; max-age=0;`,
-      },
-    });
-  };
-
-  const register = async (data: RegisterType) => {
+  async function register(data: RegisterType) {
     try {
       const registerResponse = await apiuser.post("/user/register", data);
 
+      const email = data.email;
+      const password = data.password;
+
       if (registerResponse) {
-        //mostrar informação que cadastro feito!
-        toast("Cadastro feito com sucesso", {
+        toast("Cadastro feito com Sucesso!", {
           autoClose: 2000,
           type: "success",
         });
 
-        //redicionar para login
-        router.push("/login");
+        await logIn({ email, password });
       }
     } catch (error) {
-      toast(`${error}`, {
+      toast("Problemas a fazer o Cadastro!", {
         autoClose: 2000,
         type: "error",
       });
     }
-  };
+  }
 
-  return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
+  function getUser() {
+    const token = getCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`)?.toString();
+
+    if (!token) {
+      throw new Error("Unauthenticated");
+    }
+
+    const user: User = decode(token);
+
+    return user;
+  }
+
+  return (
+    <AuthContext.Provider
+      value={{ logIn, logout, register, user, isAuthnticated }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 }

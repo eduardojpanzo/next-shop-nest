@@ -5,7 +5,7 @@ export function ProductCard() {
     <div className="relative bg-white flex flex-col border border-white rounded-md overflow-hidden group lg:max-w-[250px]">
       <div className="max-w-full h-auto">
         <Image
-          className="w-full object-cover"
+          className="w-full object-cover h-auto"
           src={"/product.png"}
           alt="product"
           width={300}

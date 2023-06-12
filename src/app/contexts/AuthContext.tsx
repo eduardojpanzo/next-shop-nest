@@ -3,7 +3,7 @@
 import { createContext, ReactNode } from "react";
 import decode from "jwt-decode";
 import { setCookie, deleteCookie, getCookie, hasCookie } from "cookies-next";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import { apiuser } from "@/lib/api";
 import { LoginType, RegisterType, User } from "./types";
@@ -12,8 +12,8 @@ interface AuthContextProps {
   logIn(data: LoginType): Promise<void>;
   logout(): Promise<void>;
   register(data: RegisterType): Promise<void>;
-  user: User;
-  isAuthnticated: boolean;
+  user: User | null;
+  isAuthnticated: boolean | null;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -77,11 +77,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  function getUser() {
+  function getUser(): User | null {
     const token = getCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`)?.toString();
 
     if (!token) {
-      throw new Error("Unauthenticated");
+      return null;
     }
 
     const user: User = decode(token);
@@ -93,6 +93,8 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{ logIn, logout, register, user, isAuthnticated }}
     >
+      <ToastContainer />
+
       {children}
     </AuthContext.Provider>
   );

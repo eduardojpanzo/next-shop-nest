@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, ReactNode } from "react";
+import { createContext, ReactNode, useEffect, useState } from "react";
 import decode from "jwt-decode";
 import { setCookie, deleteCookie, getCookie, hasCookie } from "cookies-next";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,15 +13,20 @@ interface AuthContextProps {
   logout(): Promise<void>;
   register(data: RegisterType): Promise<void>;
   user: User | null;
-  isAuthnticated: boolean | null;
+  isAuth: boolean | null;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
   const user = getUser();
-  const isAuthnticated =
-    user && hasCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`);
+  const hastoken = hasCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`);
+
+  const [isAuth, setIsAuth] = useState(user && hastoken);
+
+  useEffect(() => {
+    setIsAuth(user && hastoken);
+  }, [hastoken, user]);
 
   async function logIn(data: LoginType) {
     try {
@@ -90,9 +95,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider
-      value={{ logIn, logout, register, user, isAuthnticated }}
-    >
+    <AuthContext.Provider value={{ logIn, logout, register, user, isAuth }}>
       <ToastContainer />
 
       {children}

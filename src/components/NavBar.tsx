@@ -1,11 +1,11 @@
 "use client";
 
-import { useAuth } from "@/app/hooks/auth";
 import { User } from "lucide-react";
 import Link from "next/link";
 import { Dialog } from "./Dialog";
 import { SignInForm } from "./SignInForm";
 import { SignUpForm } from "./SignUpForm";
+import { useAuth } from "@/hooks/auth";
 
 const menuItems = [
   { path: "/", value: "Home" },

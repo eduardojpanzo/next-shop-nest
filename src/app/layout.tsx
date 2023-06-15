@@ -7,7 +7,7 @@ import { Inter } from "next/font/google";
 import { TopBar } from "@/components/TopBar";
 import { NavBar } from "@/components/NavBar";
 import { Footer } from "@/components/Footer";
-import { AuthContextProvider } from "./contexts/AuthContext";
+import { AuthContextProvider } from "../contexts/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="pt">
       <body className={inter.className}>
         <AuthContextProvider>
           <TopBar />

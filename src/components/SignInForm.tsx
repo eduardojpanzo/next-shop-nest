@@ -1,7 +1,7 @@
-import { useAuth } from "@/app/hooks/auth";
 import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import Input from "./Input";
+import { useAuth } from "@/hooks/auth";
 
 export function SignInForm() {
   const router = useRouter();

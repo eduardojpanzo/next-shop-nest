@@ -1,32 +1,25 @@
 "use client";
 
 import { createContext, ReactNode, useEffect, useState } from "react";
-import decode from "jwt-decode";
-import { setCookie, deleteCookie, getCookie, hasCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import { toast, ToastContainer } from "react-toastify";
+import decode from "jwt-decode";
 
 import { apiuser } from "@/lib/api";
 import { LoginType, RegisterType, User } from "./types";
+import { getCookie } from "cookies-next";
 
 interface AuthContextProps {
   logIn(data: LoginType): Promise<void>;
-  logout(): Promise<void>;
   register(data: RegisterType): Promise<void>;
   user: User | null;
-  isAuth: boolean | null;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthContextProvider({ children }: { children: ReactNode }) {
-  const user = getUser();
-  const hastoken = hasCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`);
-
-  const [isAuth, setIsAuth] = useState(user && hastoken);
-
-  useEffect(() => {
-    setIsAuth(user && hastoken);
-  }, [hastoken, user]);
+  const router = useRouter();
+  const [user] = useState(getUser());
 
   async function logIn(data: LoginType) {
     try {
@@ -34,18 +27,13 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
       const { token } = registerResponse.data;
 
-      const cookieExpiresInSeconds = 60 * 60 * 24 * 7; // 7 days
-
       if (token) {
-        setCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`, token, {
-          maxAge: cookieExpiresInSeconds,
-          sameSite: true,
-        });
-
         toast("Usúario Encotrado!", {
           autoClose: 2000,
           type: "success",
         });
+
+        router.push(`api/login?token=${token}`);
       }
     } catch (error) {
       toast("Faltha ao Localizar o Usuário!", {
@@ -53,10 +41,6 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
         type: "error",
       });
     }
-  }
-
-  async function logout() {
-    deleteCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`, { path: "/" });
   }
 
   async function register(data: RegisterType) {
@@ -95,7 +79,7 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ logIn, logout, register, user, isAuth }}>
+    <AuthContext.Provider value={{ logIn, register, user }}>
       <ToastContainer />
 
       {children}

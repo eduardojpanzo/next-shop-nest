@@ -15,7 +15,7 @@ const menuItems = [
 ];
 
 export function NavBar() {
-  const { isAuth } = useAuth();
+  const user = useAuth();
   return (
     <div className="bg-slate-100 shadow-md">
       <div className=" max-w-[1024px] mx-auto px-2 py-4 flex items-center justify-between lg:px-0">
@@ -32,7 +32,7 @@ export function NavBar() {
           ))}
         </ul>
 
-        {!isAuth ? (
+        {!user ? (
           <div className={`flex gap-3`}>
             <Dialog
               title="Criar Conta"

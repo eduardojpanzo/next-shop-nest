@@ -1,4 +1,4 @@
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { FormEvent } from "react";
 import Input from "./Input";
 import { useAuth } from "@/hooks/auth";

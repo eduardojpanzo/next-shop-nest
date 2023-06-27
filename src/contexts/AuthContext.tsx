@@ -1,16 +1,15 @@
-"use client";
-
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { createContext, ReactNode, useState } from "react";
+import { useRouter } from "next/router";
 import { toast, ToastContainer } from "react-toastify";
 import decode from "jwt-decode";
 
 import { apiuser } from "@/lib/api";
 import { LoginType, RegisterType, User } from "./types";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 interface AuthContextProps {
   logIn(data: LoginType): Promise<void>;
+  logout(): Promise<void>;
   register(data: RegisterType): Promise<void>;
   user: User | null;
 }
@@ -33,7 +32,11 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
           type: "success",
         });
 
-        router.push(`api/login?token=${token}`);
+        setCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`, token, {
+          maxAge: 60 * 60 * 24 * 7, //7days
+        });
+
+        router.push(`/`);
       }
     } catch (error) {
       toast("Faltha ao Localizar o Usuário!", {
@@ -66,6 +69,12 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function logout() {
+    deleteCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`);
+
+    router.push(`/`);
+  }
+
   function getUser(): User | null {
     const token = getCookie(`${process.env.NEXT_PUBLIC_TOKEN_KEY}`)?.toString();
 
@@ -79,9 +88,8 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ logIn, register, user }}>
+    <AuthContext.Provider value={{ logIn, logout, register, user }}>
       <ToastContainer />
-
       {children}
     </AuthContext.Provider>
   );

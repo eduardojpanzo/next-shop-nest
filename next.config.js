@@ -1,4 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  reactStrictMode: true,
+  swcMinify: true,
+  compiler: {
+    styledComponents: true,
+  },
+  images: {
+    domains: ["*"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

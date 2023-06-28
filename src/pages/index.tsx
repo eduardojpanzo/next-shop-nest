@@ -8,7 +8,7 @@ import Categories from "@/components/Categories";
 import { Newsletter } from "@/components/Newsletter";
 import { ProductCard } from "@/components/ProductCard";
 import { Tags } from "@/components/Tags";
-import Loading from "@/components/Loading";
+import { ThreeDotsLoader } from "@/components/ThreeDotsLoader";
 
 const GET_COLLECTIONS_QUERY = gql`
   query Collections {
@@ -64,10 +64,6 @@ interface ResponseData {
 const Home: NextPage = () => {
   const { data } = useQuery<ResponseData>(GET_COLLECTIONS_QUERY);
 
-  if (!data) {
-    return <Loading />;
-  }
-
   return (
     <>
       <Head>
@@ -83,20 +79,26 @@ const Home: NextPage = () => {
           <Tags />
         </div>
         <div className="bg-[#f7f7f7] py-10">
-          {data.collections.map((collection) => (
-            <div
-              key={collection.id}
-              className="max-w-[1024px] mx-auto last:mt-10"
-            >
-              <h2>{collection.name}</h2>
-              <p>{collection.description}</p>
-              <div className="flex flex-col items-center justify-center content-center gap-2 md:flex-row md:flex-wrap lg:justify-start">
-                {collection.products.map((product) => (
-                  <ProductCard key={product.id} />
-                ))}
-              </div>
-            </div>
-          ))}
+          {data ? (
+            <>
+              {data.collections.map((collection) => (
+                <div
+                  key={collection.id}
+                  className="max-w-[1024px] mx-auto last:mt-10"
+                >
+                  <h2>{collection.name}</h2>
+                  <p>{collection.description}</p>
+                  <div className="flex flex-col items-center justify-center content-center gap-2 md:flex-row md:flex-wrap lg:justify-start">
+                    {collection.products.map((product) => (
+                      <ProductCard key={product.id} />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <ThreeDotsLoader />
+          )}
         </div>
         <Newsletter />
       </>

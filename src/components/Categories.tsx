@@ -36,7 +36,9 @@ export default function Categories() {
               className="flex items-center gap-3 mt-4 transition-all hover:text-2xl hover:font-bold"
               href={`shop/girl`}
             >
-              Compre <ArrowRight />
+              <>
+                Compre <ArrowRight />
+              </>
             </Link>
           </div>
         </div>

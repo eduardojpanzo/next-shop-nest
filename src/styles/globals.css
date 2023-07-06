@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-button {
-  @apply border-none px-3 py-2 rounded-sm text-slate-800 bg-slate-300 transition-all hover:brightness-75;
+@layer components {
+  .tbody-td {
+    @apply p-3 border-b border-gray-400;
+  }
+
+  .thead-th {
+    @apply text-gray-900 text-left p-3;
+  }
+
+  button {
+    @apply border-none px-3 py-2 rounded-sm text-slate-800 bg-slate-300 transition-all cursor-pointer hover:brightness-75 disabled:cursor-not-allowed;
+  }
 }

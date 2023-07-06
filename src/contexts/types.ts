@@ -1,3 +1,10 @@
+import { ReactNode } from "react";
+
+export interface CartProviderProps {
+  children: ReactNode;
+}
+
+export type CartContextType = {};
 export type RegisterType = {
   email: string;
   name: string;

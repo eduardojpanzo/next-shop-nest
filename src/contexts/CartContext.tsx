@@ -10,15 +10,16 @@ export const CartContext = createContext<CartContextType>(
 );
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [cart, setCart] = useState<ProductCart[]>(() => {
-    const storagedCart = getCookie('@Morex-front:cart')?.toString();
+  const [cart, setCart] = useState<ProductCart[]>([]);
+  // () => {
+  //   const storagedCart = getCookie('@Morex-front:cart')?.toString();
 
-    if (storagedCart) {
-      return JSON.parse(storagedCart);
-    }
+  //   if (storagedCart) {
+  //     return JSON.parse(storagedCart);
+  //   }
 
-    return [];
-  });
+  //   return [];
+  // }
 
   const addProduct = async (productId: string) => {
     try {

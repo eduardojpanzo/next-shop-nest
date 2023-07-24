@@ -8,22 +8,22 @@ import { SignUpForm } from "./SignUpForm";
 import { useAuth } from "@/hooks/auth";
 
 const menuItems = [
-  { path: "/", value: "Home" },
-  { path: "/shop", value: "Shop" },
-  { path: "/about", value: "About Us" },
-  { path: "/contact", value: "Contact Us" },
+  { path: "/", value: "Inicial" },
+  { path: "/shop", value: "Loja" },
+  { path: "/about", value: "Sobre" },
+  { path: "/contact", value: "Contacte-nos" },
 ];
 
 export function NavBar() {
-  const user = useAuth();
+  const {user} = useAuth();
   return (
     <div className="bg-slate-100 shadow-md">
       <div className=" max-w-[1024px] mx-auto px-2 py-4 flex items-center justify-between lg:px-0">
-        <ul className="flex gap-3">
+        <ul className="flex gap-2 items-center">
           {menuItems.map(({ value, path }) => (
-            <li key={value}>
+            <li key={value} className="py-2 p-4 rounded-sm hover:bg-red-500 hover:text-white transition-all">
               <Link
-                className="block w-full h-full px-3 py-2 transition-all hover:text-red-500"
+                className="block w-full h-full px-3 py-2 transition-all text-inherit"
                 href={path}
               >
                 {value}
@@ -32,7 +32,11 @@ export function NavBar() {
           ))}
         </ul>
 
-        {!user ? (
+        {user?.email ? (
+          <div className="flex gap-3 cursor-pointer hover:text-red-500">
+            <User />
+          </div>
+        ) : (
           <div className={`flex gap-3`}>
             <Dialog
               title="Criar Conta"
@@ -51,10 +55,6 @@ export function NavBar() {
             >
               <SignInForm />
             </Dialog>
-          </div>
-        ) : (
-          <div className="flex gap-3 cursor-pointer">
-            <User />
           </div>
         )}
       </div>

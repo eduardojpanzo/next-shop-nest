@@ -2,11 +2,16 @@ import { ShoppingCart, Search } from "lucide-react";
 import { Logo } from "./Logo";
 import { useCart } from "@/hooks/useCart";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
 
 export function TopBar() {
   const router = useRouter()
   const {cart}= useCart()
   const handleGoTocart = ()=>{
+    if (!cart.length) {
+      toast.info("adicione um prodto no carrinho")
+      return
+    }
     router.push("/cart")
   } 
   return (
@@ -30,7 +35,7 @@ export function TopBar() {
         <div className="relative w-9 cursor-pointer">
           <ShoppingCart />
           <span className="absolute top-0 right-0 flex items-center justify-center w-3 h-3 rounded-full bg-red-500 text-xs font-bold">
-            {cart.length}
+            {cart?cart.length:0}
           </span>
         </div>
       </div>

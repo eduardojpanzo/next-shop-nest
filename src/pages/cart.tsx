@@ -33,7 +33,7 @@ const Cart: NextPage = () => {
     removeProduct(productId);
   }
   return (
-    <div className="p-8 bg-white rounded h-min-[calc(100vh-294px)]">
+    <div className="p-8 bg-white rounded min-h-[calc(100vh-294px)]">
       <table className="w-full">
         <thead>
           <tr>

@@ -20,6 +20,9 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const [user] = useState(getUser());
 
+  console.log(user);
+
+
   async function logIn(data: LoginType) {
     try {
       const registerResponse = await apiuser.post("/user/login", data);
@@ -83,7 +86,6 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
     }
 
     const user: User = decode(token);
-
     return user;
   }
 

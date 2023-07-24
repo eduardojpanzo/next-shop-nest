@@ -5,16 +5,17 @@ import { client } from "@/lib/apollo";
 
 import "@/styles/globals.css";
 import { CartProvider } from "@/contexts/CartContext";
+import { AuthContextProvider } from "@/contexts/AuthContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ApolloProvider client={client}>
+    <AuthContextProvider>
       <CartProvider>
       <Layout>
         <Component {...pageProps} />
       </Layout>
       </CartProvider>
-    </ApolloProvider>
+    </AuthContextProvider>
   );
 }
 

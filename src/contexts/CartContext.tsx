@@ -1,21 +1,15 @@
 import { createContext, useEffect, useState } from "react";
-import { CartContextType, CartProviderProps } from "./types";
+import { CartContextType, CartProviderProps, UpdateProductAmount } from "./types";
 import { apiuser } from "@/lib/api";
 import { Product, ProductCart } from "@/types/glebal";
 import { getCookie, setCookie } from "cookies-next";
 import { toast } from "react-toastify";
-
-interface UpdateProductAmount {
-  productId: string;
-  amount: number;
-}
 
 export const CartContext = createContext<CartContextType>(
   {} as CartContextType
 );
 
 export function CartProvider({ children }: CartProviderProps) {
-  const [products, setProducts] = useState([])
   const [cart, setCart] = useState<ProductCart[]>(() => {
     const storagedCart = getCookie('@Morex-front:cart')?.toString();
 
@@ -25,18 +19,6 @@ export function CartProvider({ children }: CartProviderProps) {
 
     return [];
   });
-
-  useEffect(()=>{
-      getAllProducts()
-  }, [products])
-  
-  const getAllProducts = async() =>{
-    const response  = await apiuser.get("product/get/all")
-    const productsData = response.data
-
-    console.log(productsData);
-    
-  }
 
   const addProduct = async (productId: string) => {
     try {
@@ -54,7 +36,7 @@ export function CartProvider({ children }: CartProviderProps) {
         newCart[productInCart].amount += 1;
         setCart(newCart);
       } else {
-        const { data: product } = await apiuser.get(`/product/${productId}`);
+        const { data: product } = await apiuser.get<Product>(`/product/${productId}`);
         newCart = [...cart, { ...product, amount: 1 }]
         setCart(newCart);
       }
@@ -114,5 +96,5 @@ export function CartProvider({ children }: CartProviderProps) {
       toast.error('Erro na alteração de quantidade do produto');
     }
   };
-  return <CartContext.Provider value={{}}>{children}</CartContext.Provider>;
+  return <CartContext.Provider value={{cart, addProduct, removeProduct, updateProductAmount}}>{children}</CartContext.Provider>;
 }

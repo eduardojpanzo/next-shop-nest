@@ -1,10 +1,39 @@
+import { useCart } from "@/hooks/useCart";
+import { ProductCart } from "@/types/glebal";
+import { formatPrice } from "@/util/format";
 import { MinusCircle, PlusCircle, Trash } from "lucide-react";
 import { NextPage } from "next";
 import Image from "next/image";
 
 const Cart: NextPage = () => {
+  const { cart, removeProduct, updateProductAmount } = useCart();
+
+  const cartFormatted = cart.map(product => ({
+    ...product,
+    priceFormatted: formatPrice(product.price),
+    subtotal: formatPrice(product.price * product.amount)
+  }))
+
+  const total =
+    formatPrice(
+      cart.reduce((sumTotal, product) => {
+        return sumTotal += product.amount * product.price;
+      }, 0)
+    )
+
+  function handleProductIncrement(product: ProductCart) {
+    updateProductAmount({ productId: product.id, amount: product.amount + 1 });
+  }
+
+  function handleProductDecrement(product: ProductCart) {
+    updateProductAmount({ productId: product.id, amount: product.amount - 1 });
+  }
+
+  function handleRemoveProduct(productId: string) {
+    removeProduct(productId);
+  }
   return (
-    <div className="p-8 bg-white rounded h-[calc(100vh-294px)]">
+    <div className="p-8 bg-white rounded h-min-[calc(100vh-294px)]">
       <table className="w-full">
         <thead>
           <tr>
@@ -16,21 +45,22 @@ const Cart: NextPage = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className="tbody-td">
-              {/* <Image src={""} alt="image" layout="fill" /> */}
+          {cartFormatted.map(product=>(
+          <tr key={product.id}>
+            <td className="tbody-td w-32 h-32">
+              <Image src={`${process.env.NEXT_PUBLIC_BASE_URL}/${product.idImage}`} width="100" height="100" alt="image" />
             </td>
             <td className="tbody-td">
-              <strong>{"product.title"}</strong>
-              <span>{"product.price"}</span>
+              <strong className="pr-4">{product.name}</strong>
+              <span>{product.priceFormatted}</span>
             </td>
             <td className="tbody-td">
               <div className="flex items-center">
                 <button
                   type="button"
                   data-testid="decrement-product"
-                  //disabled={product.amount <= 1}
-                  //onClick={() => handleProductDecrement(product)}
+                  disabled={product.amount <= 1}
+                  onClick={() => handleProductDecrement(product)}
                 >
                   <MinusCircle color="#00BEC5" size={20} />
                 </button>
@@ -39,29 +69,29 @@ const Cart: NextPage = () => {
                   type="text"
                   data-testid="product-amount"
                   readOnly
-                  //value={product.amount}
-                  value={4}
+                  value={product.amount}
                 />
                 <button
                   type="button"
                   data-testid="increment-product"
-                  //onClick={() => handleProductIncrement(product)}
+                  onClick={() => handleProductIncrement(product)}
                 >
                   <PlusCircle color="#00BEC5" size={20} />
                 </button>
               </div>
             </td>
-            <td className="tbody-td">2000 kz</td>
+            <td className="tbody-td">{product.subtotal}</td>
             <td className="tbody-td">
               <button
                 type="button"
                 data-testid="remove-product"
-                //onClick={() => handleRemoveProduct(product.id)}
+                onClick={() => handleRemoveProduct(product.id)}
               >
                 <Trash color="red" size={20} />
               </button>
             </td>
           </tr>
+          ))}
         </tbody>
       </table>
 
@@ -70,7 +100,7 @@ const Cart: NextPage = () => {
 
         <div className="flex items-baseline">
           <span className="text-gray-900 font-bold">TOTAL</span>
-          <strong className="ml-1 text-xl">{345}</strong>
+          <strong className="ml-1 text-xl">{total}</strong>
         </div>
       </footer>
     </div>

@@ -16,7 +16,7 @@ type PropsType = { data: Collection[] };
 
 export default function Home({
   data,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) {  
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {   
 
   return (
     <>
@@ -43,7 +43,7 @@ export default function Home({
                   <p>{collection.description}</p>
                   <div className="flex flex-col items-center justify-center content-center gap-2 md:flex-row md:flex-wrap lg:justify-start">
                     {collection.products.map((product) => (
-                      <ProductCard key={product.id} product={product} />
+                      <ProductCard key={product.product.id} product={product.product} />
                     ))}
                   </div>
                 </div>

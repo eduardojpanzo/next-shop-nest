@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { CartContextType, CartProviderProps } from "./types";
 import { apiuser } from "@/lib/api";
-import { Product } from "@/types/glebal";
+import { Product, ProductCart } from "@/types/glebal";
 import { getCookie, setCookie } from "cookies-next";
 import { toast } from "react-toastify";
 
@@ -16,7 +16,7 @@ export const CartContext = createContext<CartContextType>(
 
 export function CartProvider({ children }: CartProviderProps) {
   const [products, setProducts] = useState([])
-  const [cart, setCart] = useState<Product[]>(() => {
+  const [cart, setCart] = useState<ProductCart[]>(() => {
     const storagedCart = getCookie('@Morex-front:cart')?.toString();
 
     if (storagedCart) {
@@ -46,7 +46,7 @@ export function CartProvider({ children }: CartProviderProps) {
       if (productInCart !== -1) {
         const { data: foudedproduct } = await apiuser.get<Product>(`/product/${productId}`);
 
-        if (cart[productInCart].amount >= foudedproduct.stock) {
+        if (cart[productInCart].amount >= foudedproduct.salaAmount) {
           toast.error('Quantidade solicitada fora de estoque');
           return;
         }
@@ -98,7 +98,7 @@ export function CartProvider({ children }: CartProviderProps) {
       }
 
       const { data: foudedproduct } = await apiuser.get<Product>(`/product/${productId}`);
-      const productUnavaliable = amount > foudedproduct.stock;
+      const productUnavaliable = amount > foudedproduct.stockAmount;
 
       if (productUnavaliable) {
         toast.error('Quantidade solicitada fora de estoque');

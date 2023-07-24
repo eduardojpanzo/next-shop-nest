@@ -10,20 +10,29 @@ export type Product = {
   id: string;
   name: string;
   slug: string
-  price: number;
   description: string
-  amount: number
+  price: number;
+  salaAmount: number
   idImage: string
-  stock: number
+  stockAmount: number
   category : Category
 };
+
+export type ProductCart  = {
+  id: string;
+  name: string;
+  slug: string
+  price: number;
+  idImage: string
+  amount: number
+}
 
 export type Collection = {
   description: string;
   id: string;
   name: string;
   slug: string;
-  products: Product[];
+  products: {product:Product}[];
 };
 
 export type Category = {

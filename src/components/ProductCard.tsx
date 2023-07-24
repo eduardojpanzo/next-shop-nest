@@ -25,7 +25,9 @@ export function ProductCard({product}:ProductCardProps) {
         </h4>
 
         <div className="flex items-center justify-between text-xs mt-4 text-gray-500">
-          <span>Quantidade: {product.amount}</span>
+          <span>Vendidos: {product.salaAmount?product.salaAmount:0}</span>
+
+          <span>Disponivel: {product.stockAmount}</span>
         </div>
       </div>
 

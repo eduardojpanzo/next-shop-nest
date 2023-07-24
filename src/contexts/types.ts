@@ -5,6 +5,7 @@ export interface CartProviderProps {
 }
 
 export type CartContextType = {};
+
 export type RegisterType = {
   email: string;
   name: string;

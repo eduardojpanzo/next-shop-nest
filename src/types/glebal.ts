@@ -14,6 +14,7 @@ export type Product = {
   description: string
   amount: number
   idImage: string
+  stock: number
   category : Category
 };
 

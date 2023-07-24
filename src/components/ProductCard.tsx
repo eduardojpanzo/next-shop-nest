@@ -1,13 +1,17 @@
+import { Product } from "@/types/glebal";
 import Image from "next/image";
 
-export function ProductCard() {
+interface ProductCardProps {
+  product: Product
+}
+export function ProductCard({product}:ProductCardProps) {
   return (
     <div className="relative bg-white flex flex-col border border-white rounded-md overflow-hidden group lg:max-w-[250px]">
       <div className="max-w-full h-auto">
         <Image
           className="w-full object-cover h-auto"
-          src={"/product.png"}
-          alt="product"
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${product.idImage}`}
+          alt={product.slug}
           width={300}
           height={300}
           priority
@@ -15,15 +19,13 @@ export function ProductCard() {
       </div>
 
       <div className="w-full h-36 p-3">
-        <h3 className="font-bold text-lg text-gray-800">Product Name</h3>
+        <h3 className="font-bold text-lg text-gray-800">{product.name}</h3>
         <h4 className="font-bold text-2xl leading-loose text-red-500">
-          AOA 450.00
+          AOA {product.price}
         </h4>
 
         <div className="flex items-center justify-between text-xs mt-4 text-gray-500">
-          <span>Vendido: 40</span>
-
-          <span>disponível : 23</span>
+          <span>Quantidade: {product.amount}</span>
         </div>
       </div>
 

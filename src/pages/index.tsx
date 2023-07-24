@@ -1,7 +1,5 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, InferGetServerSidePropsType, NextPage } from "next";
 import Head from "next/head";
-
-import { gql, useQuery } from "@apollo/client";
 
 import { Banner } from "@/components/Banner";
 import Categories from "@/components/Categories";
@@ -9,67 +7,22 @@ import { Newsletter } from "@/components/Newsletter";
 import { ProductCard } from "@/components/ProductCard";
 import { Tags } from "@/components/Tags";
 import { ThreeDotsLoader } from "@/components/ThreeDotsLoader";
+import { apiuser } from "@/lib/api";
+import { Collection } from "@/types/glebal";
 
-const GET_COLLECTIONS_QUERY = gql`
-  query Collections {
-    collections {
-      description
-      id
-      name
-      slug
-      products {
-        id
-        name
-        price
-        slug
-        images {
-          id
-          height
-          width
-          fileName
-          url
-        }
-      }
-    }
-  }
-`;
+type PropsType = { data: Collection[] };
 
-type Image = {
-  id: string;
-  height: number;
-  width: number;
-  fileName: string;
-  url: string;
-};
 
-type Product = {
-  id: string;
-  name: string;
-  price: number;
-  slug: string;
-  images: Image;
-};
 
-type Collection = {
-  description: string;
-  id: string;
-  name: string;
-  slug: string;
-  products: Product[];
-};
-interface ResponseData {
-  collections: Collection[];
-}
-
-const Home: NextPage = () => {
-  const { data } = useQuery<ResponseData>(GET_COLLECTIONS_QUERY);
+export default function Home({
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) {  
 
   return (
     <>
       <Head>
         <title>Panigina Inicial</title>
         <meta name="description" content="pagina inicial do site" />
-        {/* <link rel="icon" href="/favicon.ico" /> */}
       </Head>
 
       <>
@@ -81,7 +34,7 @@ const Home: NextPage = () => {
         <div className="bg-[#f7f7f7] py-10">
           {data ? (
             <>
-              {data.collections.map((collection) => (
+              {data.map((collection) => (
                 <div
                   key={collection.id}
                   className="max-w-[1024px] mx-auto last:mt-10"
@@ -90,7 +43,7 @@ const Home: NextPage = () => {
                   <p>{collection.description}</p>
                   <div className="flex flex-col items-center justify-center content-center gap-2 md:flex-row md:flex-wrap lg:justify-start">
                     {collection.products.map((product) => (
-                      <ProductCard key={product.id} />
+                      <ProductCard key={product.id} product={product} />
                     ))}
                   </div>
                 </div>
@@ -106,4 +59,14 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export const getServerSideProps: GetServerSideProps<PropsType> = async () => {
+
+  const res = await apiuser.get(`/collection/all`);
+  const data: Collection[] = res.data;  
+
+  return {
+    props: {
+      data,
+    },
+  };
+};
